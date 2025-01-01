@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh Sách Sinh Viên</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền sáng nhẹ */
+        }
+        .container {
+            max-width: 1100px; /* Tăng chiều rộng container */
+        }
+        h2 {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table th {
+            white-space: nowrap; /* Đảm bảo tiêu đề bảng không xuống dòng */
+        }
+        .btn-group {
+            white-space: nowrap; /* Đảm bảo các nút không bị xuống dòng */
+        }
+		.btn-group a{
+			margin-right: 5px;
+		}
+        .table tbody tr {
+            line-height: 2.2; /* Tăng khoảng cách giữa các hàng */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Danh Sách Sinh Viên</h2>
+
+        <!-- Thông báo -->
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+        <!-- Form tìm kiếm -->
+        <form th:action="@{/sinhvien/danhsach}" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo tên, CMND, email" th:value="${search}">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+            </div>
+        </form>
+
+        <!-- Nút thêm sinh viên -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="text-muted">Hiển thị danh sách sinh viên</span>
+            <a href="/sinhvien/themsinhvien" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm Sinh Viên</a>
+        </div>
+
+        <!-- Bảng danh sách sinh viên -->
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th style="width: 50px;">STT</th>
+                    <th style="width: 150px;">Số CMND</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th style="width: 240px;">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Lặp qua danh sách sinh viên -->
+                <tr th:each="sinhVien, iterStat : ${listSinhVien}">
+                    <td th:text="${iterStat.index + 1}" class="text-center"></td>
+                    <td th:text="${sinhVien.soCMND}"></td>
+                    <td th:text="${sinhVien.hoTen}"></td>
+                    <td th:text="${sinhVien.email}"></td>
+                    <td th:text="${sinhVien.diaChi}"></td>
+                    <td th:text="${sinhVien.soDT}"></td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a th:href="@{/sinhvien/chitiet(soCMND=${sinhVien.soCMND})}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-eye"></i> Chi tiết
+                            </a>
+                            <a th:href="@{/sinhvien/capnhat(soCMND=${sinhVien.soCMND})}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i> Cập nhật
+                            </a>
+                            <a th:href="@{/sinhvien/xoa(soCMND=${sinhVien.soCMND})}" class="btn btn-danger btn-sm" 
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?')">
+                                <i class="bi bi-trash"></i> Xóa
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Hiển thị nếu danh sách trống -->
+                <tr th:if="${listSinhVien.isEmpty()}">
+                    <td colspan="7" class="text-center text-muted">Không có dữ liệu</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Nút danh sách tốt nghiệp -->
+        <div class="text-end mt-4">
+            <a href="/totnghiep/danhsach" class="btn btn-warning"><i class="bi bi-award"></i> Danh sách tốt nghiệp</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>

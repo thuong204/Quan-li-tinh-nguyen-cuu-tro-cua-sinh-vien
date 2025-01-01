@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Graduate Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền sáng nhẹ */
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng viền */
+            border-radius: 10px; /* Viền bo tròn */
+        }
+        .form-section-title {
+            font-size: 1.5rem;
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3; /* Gạch chân */
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .container {
+            margin-top: 30px;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4 text-primary">Nhập Thông Tin Sinh Viên Tốt Nghiệp</h1>
+
+        <!-- Thông báo thành công hoặc lỗi -->
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <form method="post" th:action="@{/sinhvien/themsinhvien}">
+            <!-- Thông tin sinh viên -->
+            <div class="card p-4 mb-4">
+                <h2 class="form-section-title">Thông Tin Sinh Viên</h2>
+                <div class="mb-3">
+                    <label for="soCMND" class="form-label">CMND:</label>
+                    <input type="text" id="soCMND" class="form-control" th:field="*{SinhVien.SoCMND}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="hoTen" class="form-label">Họ và tên:</label>
+                    <input type="text" id="hoTen" class="form-control" th:field="*{SinhVien.HoTen}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control" th:field="*{SinhVien.Email}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="soDT" class="form-label">Số điện thoại:</label>
+                    <input type="text" id="soDT" class="form-control" th:field="*{SinhVien.SoDT}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="diaChi" class="form-label">Địa chỉ:</label>
+                    <input type="text" id="diaChi" class="form-control" th:field="*{SinhVien.DiaChi}" required>
+                </div>
+            </div>
+
+            <!-- Thông tin tốt nghiệp -->
+            <div class="card p-4 mb-4">
+                <h2 class="form-section-title">Thông Tin Tốt Nghiệp</h2>
+                <div class="mb-3">
+                    <label for="nganh" class="form-label">Ngành:</label>
+                    <select id="nganh" class="form-select" th:field="*{TotNghiep.maTotNghiep.MaNganh}" required>
+                        <option value="" disabled selected>Chọn ngành</option>
+                        <option th:each="nganh : ${Nganh}" 
+                                th:value="${nganh.maNganh}" 
+                                th:text="${nganh.tenNganh}">Ngành mẫu</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="truong" class="form-label">Trường:</label>
+                    <select id="truong" class="form-select" th:field="*{TotNghiep.maTotNghiep.MaTruong}" required>
+                        <option value="" disabled selected>Chọn trường</option>
+                        <option th:each="truong : ${Truong}" 
+                                th:value="${truong.maTruong}" 
+                                th:text="${truong.tenTruong}">Trường mẫu</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="ngayTotNghiep" class="form-label">Ngày Tốt Nghiệp:</label>
+                    <input type="date" id="ngayTotNghiep" class="form-control" th:field="*{TotNghiep.ngayTotNghiep}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="heTotNghiep" class="form-label">Hệ Tốt Nghiệp:</label>
+                    <input type="text" id="heTotNghiep" class="form-control" th:field="*{TotNghiep.heTotNghiep}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loaiTotNghiep" class="form-label">Loại Tốt Nghiệp:</label>
+                    <input type="text" id="loaiTotNghiep" class="form-control" th:field="*{TotNghiep.loaiTotNghiep}" required>
+                </div>
+            </div>
+
+            <!-- Nút gửi -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Thêm Sinh Viên</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

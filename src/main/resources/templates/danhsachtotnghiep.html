@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh Sách Sinh Viên Tốt Nghiệp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền dịu nhẹ */
+        }
+        .container {
+            max-width: 1200px; /* Mở rộng container */
+        }
+        h2 {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle; /* Canh giữa nội dung */
+        }
+        .table th {
+            text-align: center; /* Tiêu đề bảng căn giữa */
+            white-space: nowrap; /* Không xuống dòng */
+        }
+        .table tbody tr {
+            line-height: 1.8; /* Tăng khoảng cách hàng */
+        }
+        .list-unstyled {
+            margin-bottom: 0;
+            padding-left: 10px; /* Thụt vào một chút */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Danh Sách Sinh Viên Tốt Nghiệp</h2>
+
+        <!-- Form tìm kiếm -->
+        <form th:action="@{/totnghiep/danhsach}" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo thông tin tốt nghiệp và việc làm" th:value="${search}">
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i> Tìm kiếm
+                </button>
+            </div>
+        </form>
+
+        <!-- Bảng danh sách sinh viên -->
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Số CMND</th>
+                    <th>Họ và tên</th>
+                    <th>Mã ngành (Tốt nghiệp)</th>
+                    <th>Mã trường (Tốt nghiệp)</th>
+                    <th>Mã ngành (Công ty)</th>
+                    <th>Tên công ty</th>
+                    <th>Thời gian làm việc</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Duyệt danh sách sinh viên tốt nghiệp -->
+                <tr th:each="totNghiep, iterStat : ${listTotNghiep}">
+                    <td class="text-center" th:text="${iterStat.index + 1}"></td>
+                    <td class="text-center" th:text="${totNghiep.sinhVien.soCMND}"></td>
+                    <td th:text="${totNghiep.sinhVien.hoTen}"></td>
+                    <td class="text-center" th:text="${totNghiep.nganh.maNganh}"></td>
+                    <td class="text-center" th:text="${totNghiep.truong.maTruong}"></td>
+                    <td class="text-center" th:text="${totNghiep.nganh.maNganh}"></td>
+
+                    <!-- Danh sách công ty -->
+                    <td>
+                        <ul class="list-unstyled">
+                            <th:block th:each="congViec : ${totNghiep.nganh.congViec}">
+                                <li th:if="${congViec.sinhVien.soCMND == totNghiep.sinhVien.soCMND}" th:text="${congViec.tenCongTy}"></li>
+                            </th:block>
+                        </ul>
+                    </td>
+
+                    <!-- Thời gian làm việc -->
+                    <td>
+                        <ul class="list-unstyled">
+                            <th:block th:each="congViec : ${totNghiep.nganh.congViec}">
+                                <li th:if="${congViec.sinhVien.soCMND == totNghiep.sinhVien.soCMND}" th:text="${congViec.thoiGianLamViec}"></li>
+                            </th:block>
+                        </ul>
+                    </td>
+                </tr>
+
+                <!-- Hiển thị khi danh sách trống -->
+                <tr th:if="${listTotNghiep.isEmpty()}">
+                    <td colspan="8" class="text-center text-muted">Không có dữ liệu</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Nút quay lại danh sách sinh viên -->
+        <div class="text-end mt-4">
+            <a href="/sinhvien/danhsach" class="btn btn-warning">
+                <i class="bi bi-arrow-left-circle"></i> Danh sách sinh viên
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS và Icon -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</body>
+</html>
